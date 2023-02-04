@@ -6,37 +6,49 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.mykotlineducation.R
+import com.example.mykotlineducation.databinding.FragmentMainBinding
+import com.example.mykotlineducation.viewmodel.AppState
 import com.example.mykotlineducation.viewmodel.MainViewModel
+import com.google.android.material.snackbar.Snackbar.make
 
 
 class MainFragment : Fragment() {
+    lateinit var binding: FragmentMainBinding
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        val observer = object : Observer<Any> {
-            override fun onChanged(data: Any) {
+        val observer = object : Observer<AppState> {
+            override fun onChanged(data: AppState) {
                 renderData(data)
             }
         }
         viewModel.getliveData().observe(viewLifecycleOwner, observer)
         viewModel.getWeather()
+
     }
 
-    fun renderData(data: Any) {
-        Toast.makeText(requireContext(), "Работает", Toast.LENGTH_LONG).show()
+    fun renderData(data: AppState) {
+        when(data){
+            is AppState.Error -> TODO()
+            is AppState.Loading -> binding.progressBar.isVisible
+            is AppState.Success -> {
+                binding.progressBar.isVisible=false
+                binding.text.text = "Погода пришла!"
+            }
+        }
     }
 
     companion object {
