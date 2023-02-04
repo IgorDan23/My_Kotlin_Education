@@ -1,5 +1,6 @@
 package com.example.mykotlineducation.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         val observer = object : Observer<AppState> {
             override fun onChanged(data: AppState) {
@@ -36,17 +38,35 @@ class MainFragment : Fragment() {
             }
         }
         viewModel.getliveData().observe(viewLifecycleOwner, observer)
-        viewModel.getWeather()
+        viewModel.getWeather(1)
+        binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.getWeather(0)
+            } else {
+                viewModel.getWeather(1)
+
+            }
+        }
+
+
+
 
     }
 
+    @SuppressLint("SetTextI18n")
     fun renderData(data: AppState) {
-        when(data){
+        when (data) {
             is AppState.Error -> TODO()
-            is AppState.Loading -> binding.progressBar.isVisible
+            is AppState.Loading -> binding.progressBar.isVisible=true
             is AppState.Success -> {
-                binding.progressBar.isVisible=false
-                binding.text.text = "Погода пришла!"
+                binding.progressBar.isVisible = false
+                binding.cityName.text = data.whetherData.city.name
+                binding.cityCoordinates.text =
+                    "${data.whetherData.city.let.toString()} ${data.whetherData.city.lon.toString()}"
+                binding.temperatureValue.text = data.whetherData.temperature.toString()
+                binding.feelsLikeValue.text = data.whetherData.feelsLike.toString()
+
+
             }
         }
     }

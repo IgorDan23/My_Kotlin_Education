@@ -3,19 +3,31 @@ package com.example.mykotlineducation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.lang.Thread.sleep
+import com.example.mykotlineducation.repository.Repository
+import com.example.mykotlineducation.repository.RepositoryImp
 
-class MainViewModel(private val liveData:MutableLiveData<AppState> = MutableLiveData()):ViewModel() {
-    fun getliveData():LiveData<AppState>{
+
+class MainViewModel(
+    private val liveData: MutableLiveData<AppState> = MutableLiveData(),
+    private val repository: RepositoryImp = RepositoryImp()
+) : ViewModel() {
+
+
+    fun getliveData(): LiveData<AppState> {
         return liveData
     }
 
-    fun getWeather(){
+    fun getWeather(type: Int) {
         Thread {
-            liveData.postValue(AppState.Loading)
-            sleep(3000)
-            liveData.postValue(AppState.Success(Any()))
-        }.start()
+
+                    if(type==0){
+                        liveData.postValue(AppState.Loading)
+                        liveData.postValue(AppState.Success(repository.getWeatherFromServer()))
+                    } else{
+                        liveData.postValue(AppState.Loading)
+                        liveData.postValue(AppState.Success(repository.getWeatherFromLocalSt()))
+                    }
+             }.start()
     }
 
 }
