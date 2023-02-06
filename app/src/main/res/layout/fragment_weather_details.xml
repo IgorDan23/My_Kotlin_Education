@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.MainFragment">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainView"
@@ -76,38 +75,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/feelsLikeLabel"
             tools:text="-23" />
-
-        <ToggleButton
-            android:textColor="@color/white"
-            android:id="@+id/toggleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:backgroundTint="@color/teal_700"
-            android:textOff="@string/WeatherOnline"
-            android:textOn="@string/WeatherLocal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <FrameLayout
-        android:id="@+id/progressBar"
-        android:background="@color/white"
-        tools:background="#00FFFFFF"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ProgressBar
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:indeterminateDrawable="@drawable/spinner_ring"
-            android:indeterminateOnly="true" />
-
-    </FrameLayout>
-
-
 </FrameLayout>
+

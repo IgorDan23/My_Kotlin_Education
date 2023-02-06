@@ -1,9 +1,9 @@
-package com.example.mykotlineducation.view.main
+package com.example.mykotlineducation.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.mykotlineducation.R
-import com.example.mykotlineducation.view.MainFragment
+import com.example.mykotlineducation.view.weatherlist.ListWeatherFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState==null){
             supportFragmentManager.beginTransaction().replace(
                 R.id.fragment_cont,
-                MainFragment.newInstance()
+                ListWeatherFragment.newInstance()
             ).commit()
         }
     }

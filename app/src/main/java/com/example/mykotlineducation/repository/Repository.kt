@@ -1,7 +1,8 @@
 package com.example.mykotlineducation.repository
 
 interface Repository {
-    fun getWeatherFromServer() : Weather
-    fun getWeatherFromLocalSt() : Weather
+    fun getWeatherFromServer() : List<Weather>
+    fun getWorldWeatherFromLocalSt(): List<Weather>
+    fun getRussianWeatherFromLocalSt(): List<Weather>
 
 }
