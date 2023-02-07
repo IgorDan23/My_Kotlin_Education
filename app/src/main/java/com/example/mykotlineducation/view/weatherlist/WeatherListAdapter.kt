@@ -12,8 +12,11 @@ import com.example.mykotlineducation.utils.BUNDLE_WEATHER_KEY
 import com.example.mykotlineducation.view.MainActivity
 import com.example.mykotlineducation.view.details.DetailsWeatherFragment
 
-class WeatherListAdapter(private var data: List<Weather> = listOf()) :
+class WeatherListAdapter(private val onItemClick:OnItemClick,
+                         private var data: List<Weather> = listOf()) :
     RecyclerView.Adapter<WeatherListAdapter.CityHolder>() {
+
+
     fun setData(dataNew: List<Weather>) {
         this.data = dataNew
         notifyDataSetChanged()
@@ -37,7 +40,7 @@ class WeatherListAdapter(private var data: List<Weather> = listOf()) :
         return data.size
     }
 
-    class CityHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+   inner class CityHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(weather: Weather) {
             val binding = FragmentWeatherRecyclerItemBinding.bind(itemView)
             binding.cityName.text = weather.city.name
@@ -47,13 +50,8 @@ class WeatherListAdapter(private var data: List<Weather> = listOf()) :
             } else {
                 weather.temperature.toString()
             }
-            val bundle = Bundle()
-            bundle.putParcelable(BUNDLE_WEATHER_KEY, weather)
             binding.weatherItem.setOnClickListener {
-                (itemView.context as MainActivity).supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_cont, DetailsWeatherFragment.newInstance(bundle))
-                    .addToBackStack("").commit()
+                onItemClick.OnClick(weather)
             }
         }
     }

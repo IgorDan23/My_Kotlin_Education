@@ -11,11 +11,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.mykotlineducation.R
 import com.example.mykotlineducation.databinding.FragmentWeatherListBinding
+import com.example.mykotlineducation.repository.Weather
+import com.example.mykotlineducation.utils.BUNDLE_WEATHER_KEY
+import com.example.mykotlineducation.view.MainActivity
+import com.example.mykotlineducation.view.details.DetailsWeatherFragment
 import com.example.mykotlineducation.viewmodel.AppState
 import com.example.mykotlineducation.viewmodel.MainViewModel
 
 
-class ListWeatherFragment : Fragment() {
+class ListWeatherFragment : Fragment(),OnItemClick {
     var _binding: FragmentWeatherListBinding? = null
     private val binding: FragmentWeatherListBinding
         get() {
@@ -30,7 +34,7 @@ class ListWeatherFragment : Fragment() {
 
     }
 
-    private val adapter = WeatherListAdapter()
+    private val adapter = WeatherListAdapter(this)
 
 
     override fun onCreateView(
@@ -101,5 +105,14 @@ class ListWeatherFragment : Fragment() {
 
     companion object {
         fun newInstance() = ListWeatherFragment()
+    }
+
+
+    override fun OnClick(weather: Weather) {
+        val bundle=Bundle()
+        bundle.putParcelable(BUNDLE_WEATHER_KEY,weather)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_cont,DetailsWeatherFragment.newInstance(bundle))
+            .addToBackStack("").commit()
     }
 }
