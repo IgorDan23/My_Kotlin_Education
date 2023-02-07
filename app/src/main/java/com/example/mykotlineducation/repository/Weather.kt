@@ -5,8 +5,14 @@ data class Weather(val city: City = defaultCity(),val temperature:Int=0,val feel
 fun defaultCity()=City("Москва",55.45,36.37)
 
 data class City(val name:String,val let:Double, val lon:Double)
+fun getServerWorldCities(): List<Weather> {
+    return listOf(
+        Weather(City("Лондон", 51.5085300, -0.1257400), 1, 2))}
 
-fun getWorldCities(): List<Weather> {
+fun getServerRussianCities(): List<Weather> {
+    return listOf(
+        Weather(City("Москва", 55.755826, 37.617299900000035), 0, 2))}
+        fun getWorldCities(): List<Weather> {
     return listOf(
         Weather(City("Лондон", 51.5085300, -0.1257400), 1, 2),
         Weather(City("Токио", 35.6895000, 139.6917100), 3, 4),
@@ -22,8 +28,8 @@ fun getWorldCities(): List<Weather> {
 }
 fun getRussianCities(): List<Weather> {
     return listOf(
-        Weather(City("Москва", 55.755826, 37.617299900000035), 1, 2),
-        Weather(City("Санкт-Петербург", 59.9342802, 30.335098600000038), 3, 3),
+        Weather(City("Москва", 55.755826, 37.617299900000035), 0, 2),
+        Weather(City("Санкт-Петербург", 59.9342802, 30.335098600000038), -3, 3),
         Weather(City("Новосибирск", 55.00835259999999, 82.93573270000002), 5, 6),
         Weather(City("Екатеринбург", 56.83892609999999, 60.60570250000001), 7,
             8),

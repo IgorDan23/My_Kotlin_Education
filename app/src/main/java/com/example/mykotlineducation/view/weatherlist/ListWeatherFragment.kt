@@ -21,7 +21,7 @@ class ListWeatherFragment : Fragment() {
         get() {
             return _binding!!
         }
-    private var isRussia=false
+    private var isRussia = false
 
 
     override fun onDestroy() {
@@ -43,7 +43,7 @@ class ListWeatherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.weatherRecyclerView.adapter=adapter
+        binding.weatherRecyclerView.adapter = adapter
 
         val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         val observer = object : Observer<AppState> {
@@ -52,29 +52,40 @@ class ListWeatherFragment : Fragment() {
             }
         }
         viewModel.getliveData().observe(viewLifecycleOwner, observer)
-        viewModel.getRussianWeatherFromLocal()
-       /* binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                viewModel.getRussianWeatherFromLocal()
-            } else {
-                viewModel.getWorldWeatherFromLocal()
+        with(viewModel){
+            getRussianWeather()
+            getWeatherFromServer()
+        }
+        viewModel.getRussianWeather()
+         binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
+                 if (isChecked) {
+                     viewModel.getWeatherFromLocal()
+                 } else {
+                     viewModel.getWeatherFromServer()
+             }
 
-            }
-        }*/
-     binding.buttonCont.setOnClickListener{
-         if (isRussia){
-             isRussia=false
-             binding.buttonCont.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.russia))
-             viewModel.getRussianWeatherFromLocal()
-         }else {
-             isRussia=true
-             binding.buttonCont.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.earth))
-             viewModel.getWorldWeatherFromLocal()
          }
-
-     }
-
-
+        binding.buttonCont.setOnClickListener {
+            if (isRussia) {
+                isRussia = false
+                binding.buttonCont.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.russia
+                    )
+                )
+                viewModel.getRussianWeather()
+            } else {
+                isRussia = true
+                binding.buttonCont.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.earth
+                    )
+                )
+                viewModel.getWorldWeather()
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -84,9 +95,6 @@ class ListWeatherFragment : Fragment() {
             is AppState.Loading -> TODO()
             is AppState.Success -> {
                 adapter.setData(data.whetherData)
-
-
-
             }
         }
     }
