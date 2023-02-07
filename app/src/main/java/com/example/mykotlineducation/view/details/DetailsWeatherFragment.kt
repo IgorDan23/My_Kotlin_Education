@@ -1,26 +1,26 @@
 package com.example.mykotlineducation.view.details
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.mykotlineducation.databinding.FragmentWeatherDetailsBinding
+import com.example.mykotlineducation.repository.Weather
+import com.example.mykotlineducation.utils.BUNDLE_WEATHER_KEY
 
 
 class DetailsWeatherFragment : Fragment() {
-    var _binding: FragmentWeatherDetailsBinding?=null
-    private val binding:FragmentWeatherDetailsBinding
-    get() {
-        return _binding!!
-    }
-
+    var _binding: FragmentWeatherDetailsBinding? = null
+    private val binding: FragmentWeatherDetailsBinding
+        get() {
+            return _binding!!
+        }
 
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding=null
+        _binding = null
 
     }
 
@@ -35,27 +35,24 @@ class DetailsWeatherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val weather = arguments?.getParcelable<Weather>(BUNDLE_WEATHER_KEY)
+        if (weather != null) {
+            binding.cityName.text = weather.city.name
+            binding.cityCoordinates.text =
+                "${weather.city.let.toString()}  ${weather.city.lon.toString()}"
+            binding.temperatureValue.text = weather.temperature.toString()
+            binding.feelsLikeValue.text = weather.feelsLike.toString()
+        }
 
 
     }
 
-    @SuppressLint("SetTextI18n")
-/*  fun renderData(data: AppState) {
-      when (data) {
-          is AppState.Error -> TODO()
-          is AppState.Success -> {
-              binding.cityName.text = data.whetherData.city.name
-              binding.cityCoordinates.text =
-                  "${data.whetherData.city.let.toString()}  ${data.whetherData.city.lon.toString()}"
-              binding.temperatureValue.text = data.whetherData.temperature.toString()
-              binding.feelsLikeValue.text = data.whetherData.feelsLike.toString()
 
-
-          }
-      }
-  } */
-
-  companion object {
-      fun newInstance() = DetailsWeatherFragment()
-  }
+    companion object {
+        fun newInstance(bundle: Bundle): DetailsWeatherFragment {
+            val fragment = DetailsWeatherFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
 }

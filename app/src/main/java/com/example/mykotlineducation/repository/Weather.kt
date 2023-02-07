@@ -1,10 +1,15 @@
 package com.example.mykotlineducation.repository
 
-data class Weather(val city: City = defaultCity(),val temperature:Int=0,val feelsLike:Int=0)
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Weather(val city: City = defaultCity(),val temperature:Int=0,val feelsLike:Int=0):Parcelable
+
 
 fun defaultCity()=City("Москва",55.45,36.37)
-
-data class City(val name:String,val let:Double, val lon:Double)
+@Parcelize
+data class City(val name:String,val let:Double, val lon:Double):Parcelable
 fun getServerWorldCities(): List<Weather> {
     return listOf(
         Weather(City("Лондон", 51.5085300, -0.1257400), 1, 2))}

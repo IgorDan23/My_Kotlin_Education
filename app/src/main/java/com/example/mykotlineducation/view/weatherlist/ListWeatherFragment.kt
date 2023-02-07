@@ -52,19 +52,19 @@ class ListWeatherFragment : Fragment() {
             }
         }
         viewModel.getliveData().observe(viewLifecycleOwner, observer)
-        with(viewModel){
+        with(viewModel) {
             getRussianWeather()
             getWeatherFromServer()
         }
         viewModel.getRussianWeather()
-         binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
-                 if (isChecked) {
-                     viewModel.getWeatherFromLocal()
-                 } else {
-                     viewModel.getWeatherFromServer()
-             }
+        binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.getWeatherFromLocal()
+            } else {
+                viewModel.getWeatherFromServer()
+            }
 
-         }
+        }
         binding.buttonCont.setOnClickListener {
             if (isRussia) {
                 isRussia = false

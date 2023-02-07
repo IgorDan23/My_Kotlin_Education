@@ -1,12 +1,16 @@
 package com.example.mykotlineducation.view.weatherlist
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mykotlineducation.databinding.FragmentWeatherListBinding
+import com.example.mykotlineducation.R
 import com.example.mykotlineducation.databinding.FragmentWeatherRecyclerItemBinding
 import com.example.mykotlineducation.repository.Weather
+import com.example.mykotlineducation.utils.BUNDLE_WEATHER_KEY
+import com.example.mykotlineducation.view.MainActivity
+import com.example.mykotlineducation.view.details.DetailsWeatherFragment
 
 class WeatherListAdapter(private var data: List<Weather> = listOf()) :
     RecyclerView.Adapter<WeatherListAdapter.CityHolder>() {
@@ -42,6 +46,14 @@ class WeatherListAdapter(private var data: List<Weather> = listOf()) :
                 ("${"+"}${weather.temperature}")
             } else {
                 weather.temperature.toString()
+            }
+            val bundle = Bundle()
+            bundle.putParcelable(BUNDLE_WEATHER_KEY, weather)
+            binding.weatherItem.setOnClickListener {
+                (itemView.context as MainActivity).supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_cont, DetailsWeatherFragment.newInstance(bundle))
+                    .addToBackStack("").commit()
             }
         }
     }
