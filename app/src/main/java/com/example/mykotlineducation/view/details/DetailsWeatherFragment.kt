@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.mykotlineducation.databinding.FragmentWeatherDetailsBinding
+import com.example.mykotlineducation.repository.OnServerResponse
 import com.example.mykotlineducation.repository.Weather
+import com.example.mykotlineducation.repository.WeatherDTO
+import com.example.mykotlineducation.repository.WeatherLoader
 import com.example.mykotlineducation.utils.BUNDLE_WEATHER_KEY
 
 
-class DetailsWeatherFragment : Fragment() {
+class DetailsWeatherFragment : Fragment(), OnServerResponse {
     var _binding: FragmentWeatherDetailsBinding? = null
     private val binding: FragmentWeatherDetailsBinding
         get() {
@@ -33,18 +37,30 @@ class DetailsWeatherFragment : Fragment() {
         return binding.root
     }
 
+    private fun Toast.weather(mes: String) {
+        Toast.makeText(requireContext(), mes, Toast.LENGTH_LONG).show()
+    }
+
+    lateinit var localNameCity: String
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weather = arguments?.getParcelable<Weather>(BUNDLE_WEATHER_KEY)
-        if (weather != null) {
-            binding.cityName.text = weather.city.name
-            binding.cityCoordinates.text =
-                "${weather.city.let.toString()}  ${weather.city.lon.toString()}"
-            binding.temperatureValue.text = weather.temperature.toString()
-            binding.feelsLikeValue.text = weather.feelsLike.toString()
+        val weather = arguments?.getParcelable<Weather>(BUNDLE_WEATHER_KEY)?.let {
+           WeatherLoader(this).loadWeather(it.city.let,it.city.lon)
+            Toast(requireContext()).weather("работает")
+            localNameCity=it.city.name.toString()
         }
 
 
+    }
+
+    fun renderData(weatherDto: WeatherDTO) {
+        binding.let {
+            it.cityName.text = localNameCity
+            it.cityCoordinates.text =
+                "${weatherDto.info.lat.toString()}  ${weatherDto.info.lon.toString()}"
+            it.temperatureValue.text = weatherDto.fact.temperature.toString()
+            it.feelsLikeValue.text = weatherDto.fact.feelsLike.toString()
+        }
     }
 
 
@@ -54,5 +70,9 @@ class DetailsWeatherFragment : Fragment() {
             fragment.arguments = bundle
             return fragment
         }
+    }
+
+    override fun onResponse(weatherDTO: WeatherDTO) {
+        renderData(weatherDTO)
     }
 }
