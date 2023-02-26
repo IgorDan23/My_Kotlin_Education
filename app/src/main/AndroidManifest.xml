@@ -27,6 +27,16 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <service android:name=".viewmodel.LoadWeatherIntentService" />
+        <receiver
+            android:name=".viewmodel.MyBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="myaction" />
+
+            </intent-filter>
+
+        </receiver>
     </application>
 
 </manifest>

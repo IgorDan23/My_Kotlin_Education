@@ -1,20 +1,35 @@
 package com.example.mykotlineducation.view.details
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat.registerReceiver
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.mykotlineducation.BuildConfig
 import com.example.mykotlineducation.databinding.FragmentWeatherDetailsBinding
-import com.example.mykotlineducation.repository.OnServerResponse
-import com.example.mykotlineducation.repository.Weather
-import com.example.mykotlineducation.repository.WeatherDTO
-import com.example.mykotlineducation.repository.WeatherLoader
-import com.example.mykotlineducation.utils.BUNDLE_WEATHER_KEY
+import com.example.mykotlineducation.repository.*
+import com.example.mykotlineducation.repository.weatherDTO.WeatherDTO
+import com.example.mykotlineducation.utils.*
+import com.example.mykotlineducation.viewmodel.*
+import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import okhttp3.*
+import java.io.IOException
 
 
-class DetailsWeatherFragment : Fragment(), OnServerResponse {
+class DetailsWeatherFragment : Fragment() {
     var _binding: FragmentWeatherDetailsBinding? = null
     private val binding: FragmentWeatherDetailsBinding
         get() {
@@ -41,25 +56,44 @@ class DetailsWeatherFragment : Fragment(), OnServerResponse {
         Toast.makeText(requireContext(), mes, Toast.LENGTH_LONG).show()
     }
 
+
     lateinit var localNameCity: String
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weather = arguments?.getParcelable<Weather>(BUNDLE_WEATHER_KEY)?.let {
-           WeatherLoader(this).loadWeather(it.city.let,it.city.lon)
-            Toast(requireContext()).weather("работает")
-            localNameCity=it.city.name.toString()
-        }
 
+        arguments?.let {
+            val viewModel = ViewModelProvider(this).get(DetailsViewModel::class.java)
+            val observer = object : Observer<DetailsState> {
+                override fun onChanged(t: DetailsState) {
+                    answer(t)
+                }
+            }
+            viewModel.getLivedata().observe(viewLifecycleOwner, observer)
+
+           it.getParcelable<Weather>(BUNDLE_WEATHER_KEY)?.let {weather ->
+               viewModel.getWeather(weather.city)
+           }
+        }
 
     }
 
-    fun renderData(weatherDto: WeatherDTO) {
+
+    fun answer(detailsState: DetailsState){
+        when(detailsState){
+            is DetailsState.Success -> renderData(detailsState.whetherData)
+            is DetailsState.Error -> TODO()
+            DetailsState.Loading -> TODO()
+        }
+    }
+
+
+    fun renderData(weather: Weather) {
         binding.let {
-            it.cityName.text = localNameCity
+            it.cityName.text = weather.city.name
             it.cityCoordinates.text =
-                "${weatherDto.info.lat.toString()}  ${weatherDto.info.lon.toString()}"
-            it.temperatureValue.text = weatherDto.fact.temperature.toString()
-            it.feelsLikeValue.text = weatherDto.fact.feelsLike.toString()
+                "${weather.city.lat.toString()}  ${weather.city.lon.toString()}"
+            it.temperatureValue.text = weather.temperature.toString()
+            it.feelsLikeValue.text = weather.feelsLike.toString()
         }
     }
 
@@ -72,7 +106,9 @@ class DetailsWeatherFragment : Fragment(), OnServerResponse {
         }
     }
 
-    override fun onResponse(weatherDTO: WeatherDTO) {
-        renderData(weatherDTO)
-    }
+
+
+
+
+
 }

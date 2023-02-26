@@ -1,8 +1,11 @@
-package com.example.mykotlineducation.repository
+package com.example.mykotlineducation.repository.weatherDTO
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Part(
     @SerializedName("condition")
     val condition: String,
@@ -19,7 +22,7 @@ data class Part(
     @SerializedName("polar")
     val polar: Boolean,
     @SerializedName("prec_mm")
-    val precMm: Number,
+    val precMm: Double,
     @SerializedName("prec_period")
     val precPeriod: Int,
     @SerializedName("prec_prob")
@@ -40,4 +43,4 @@ data class Part(
     val windGust: Double,
     @SerializedName("wind_speed")
     val windSpeed: Double
-)
+): Parcelable

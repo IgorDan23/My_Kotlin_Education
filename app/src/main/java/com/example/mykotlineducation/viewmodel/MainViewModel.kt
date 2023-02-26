@@ -44,14 +44,14 @@ class MainViewModel(
         Thread {
             if (isServer) {
                 // liveData.postValue(AppState.Loading)
-                val answer = if (isRussian) repository.getRussianWeatherFromServer() else
-                    repository.getWorldWeatherFromServer()
+                val answer = if (isRussian) repository.getRussianWeather() else
+                    repository.getWorldWeather()
                 liveData.postValue(AppState.Success(answer))
             }
             if (!isServer) {
                 //liveData.postValue(AppState.Loading)
-                val answer = if (isRussian) repository.getRussianWeatherFromLocalSt() else
-                    repository.getWorldWeatherFromLocalSt()
+                val answer = if (isRussian) repository.getRussianWeather() else
+                    repository.getWorldWeather()
                 liveData.postValue(AppState.Success(answer))
 
             }

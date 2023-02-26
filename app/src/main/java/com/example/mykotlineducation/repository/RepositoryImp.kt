@@ -1,19 +1,13 @@
 package com.example.mykotlineducation.repository
 
 class RepositoryImp : Repository {
-    override fun getWorldWeatherFromServer(): List<Weather> {
-        return getServerWorldCities()
-    }
-    override fun getRussianWeatherFromServer(): List<Weather> {
-        return getServerRussianCities()
-    }
 
 
-    override fun getWorldWeatherFromLocalSt(): List<Weather> {
+    override fun getWorldWeather(): List<Weather> {
         return getWorldCities()
     }
 
-    override fun getRussianWeatherFromLocalSt(): List<Weather> {
+    override fun getRussianWeather(): List<Weather> {
         return getRussianCities()
     }
 
