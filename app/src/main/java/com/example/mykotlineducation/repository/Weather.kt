@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Weather(val city: City = defaultCity(),val temperature:Int=0,val feelsLike:Int=0):Parcelable
+data class Weather(val city: City = defaultCity(),val temperature:Int=0,val feelsLike:Int=0,val icon:String="skc_d"):Parcelable
 
 
 fun defaultCity()=City("Москва",55.45,36.37)

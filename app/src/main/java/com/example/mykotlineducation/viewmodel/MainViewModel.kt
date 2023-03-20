@@ -3,7 +3,9 @@ package com.example.mykotlineducation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.mykotlineducation.repository.DetailsRepositoryAddWeather
 import com.example.mykotlineducation.repository.RepositoryImp
+import com.example.mykotlineducation.repository.RoomRepositoryImp
 import kotlin.properties.Delegates
 
 
@@ -46,6 +48,7 @@ class MainViewModel(
                 // liveData.postValue(AppState.Loading)
                 val answer = if (isRussian) repository.getRussianWeather() else
                     repository.getWorldWeather()
+
                 liveData.postValue(AppState.Success(answer))
             }
             if (!isServer) {

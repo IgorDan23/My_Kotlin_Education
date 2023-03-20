@@ -6,7 +6,7 @@ import com.example.mykotlineducation.repository.*
 
 class DetailsViewModel(
     private val liveData: MutableLiveData<DetailsState> = MutableLiveData(),
-   // private val repository: OkHttpRepository = OkHttpRepository(),
+    private val repositoryRoom: DetailsRepositoryAddWeather = RoomRepositoryImp(),
     private val repository: DetailsRepositoryInter = Retrofit2Repository()
 ) : ViewModel()  {
     fun getLivedata() = liveData
@@ -14,12 +14,17 @@ class DetailsViewModel(
     fun getWeather(city: City){
         repository.getWeatherFromRepository(city
         ) {
-            liveData.postValue(DetailsState.Success(it)) }
+            liveData.postValue(DetailsState.Success(it))
+            repositoryRoom.addWeather(it)
+        }
 
     }
 
    fun interface CallbackWeather {
         fun onResponse(weather: Weather)
+    }
+    fun interface CallbackAllWeather {
+        fun onResponse(listWeather: List<Weather>)
     }
 
 }

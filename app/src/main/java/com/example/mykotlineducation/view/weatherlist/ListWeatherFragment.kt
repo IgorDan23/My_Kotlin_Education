@@ -1,6 +1,7 @@
 package com.example.mykotlineducation.view.weatherlist
 
 import android.annotation.SuppressLint
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,6 @@ import com.example.mykotlineducation.R
 import com.example.mykotlineducation.databinding.FragmentWeatherListBinding
 import com.example.mykotlineducation.repository.Weather
 import com.example.mykotlineducation.utils.BUNDLE_WEATHER_KEY
-import com.example.mykotlineducation.view.MainActivity
 import com.example.mykotlineducation.view.details.DetailsWeatherFragment
 import com.example.mykotlineducation.viewmodel.AppState
 import com.example.mykotlineducation.viewmodel.MainViewModel
@@ -115,4 +115,7 @@ class ListWeatherFragment : Fragment(),OnItemClick {
             .replace(R.id.fragment_cont,DetailsWeatherFragment.newInstance(bundle))
             .addToBackStack("").commit()
     }
+
+
+
 }

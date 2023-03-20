@@ -20,7 +20,7 @@ class OkHttpRepository:DetailsRepositoryInter {
             val call = client.newCall(request)
             val response= call.execute()
             if(response.isSuccessful) {
-                val weatherDTO: WeatherDTO = Gson().fromJson(response.body()!!.string(), WeatherDTO::class.java)
+                val weatherDTO: WeatherDTO = Gson().fromJson(response.body!!.string(), WeatherDTO::class.java)
                 val weather = Converter().weatherDTOtoWeather(weatherDTO,city)
                 callbackWeather.onResponse(weather)
             }
